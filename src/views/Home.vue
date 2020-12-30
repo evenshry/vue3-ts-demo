@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import { mapGetters } from "vuex";
-import { defineComponent, ref } from "vue";
+import { useStore } from "vuex";
+import { computed, defineComponent, ref } from "vue";
 import HelloWorld from "@/components/HelloWorld.vue";
 
 export default defineComponent({
@@ -16,13 +16,10 @@ export default defineComponent({
     HelloWorld,
   },
 
-  computed: {
-    ...mapGetters({
-      token: "common/token",
-    }),
-  },
-
   setup() {
+    const store = useStore();
+    const token = computed(() => store.getters("common/token"));
+
     const massage = ref<string>("This is home page");
     const changeMessage = () => {
       massage.value =
@@ -30,7 +27,7 @@ export default defineComponent({
           ? "This is home page"
           : "This is index page";
     };
-    return { massage, changeMessage };
+    return { token, massage, changeMessage };
   },
 });
 </script>

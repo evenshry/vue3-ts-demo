@@ -1,11 +1,20 @@
 <template>
   <div class="hello">
     <h1>{{ massage }}</h1>
+    <input type="text" v-model="inputValue" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRefs, watchEffect } from "vue";
+import {
+  defineComponent,
+  onUnmounted,
+  ref,
+  toRefs,
+  watch,
+  watchEffect,
+} from "vue";
+import { useDebouncedRef } from "./../hooks/debounce";
 
 export default defineComponent({
   props: {
@@ -20,12 +29,29 @@ export default defineComponent({
 
     let massage = ref<string>("");
 
-    watchEffect(() => {
-      massage.value = msg.value;
+    watch(
+      () => msg.value,
+      () => {
+        massage.value = msg.value;
+      }
+    );
+
+    // watchEffect(() => {
+    //   massage.value = msg.value;
+    // });
+
+    let debounceTimer;
+    const inputValue = useDebouncedRef("hello", (timer) => {
+      debounceTimer = timer;
+    });
+
+    onUnmounted(() => {
+      clearTimeout(debounceTimer);
     });
 
     return {
       massage,
+      inputValue,
     };
   },
 });
