@@ -21,13 +21,13 @@ body {
   height: 100%;
   overflow-y: auto;
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  font-size: 12px;
   color: #333;
 }
 
 .navigate {
   padding: 30px;
+  font-size: 16px;
+  text-align: center;
 }
 </style>

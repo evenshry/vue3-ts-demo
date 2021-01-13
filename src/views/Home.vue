@@ -1,8 +1,8 @@
 <template>
   <div class="home">
+    <button @click="changeMessage">更新标题</button>
     <HelloWorld :msg="massage" />
-    <button @click="changeMessage()">更新标题</button>
-    <h1 class="hello">token:{{ token }}</h1>
+    <h1 class="token">Token：{{ token }}</h1>
   </div>
 </template>
 
@@ -18,22 +18,29 @@ export default defineComponent({
 
   setup() {
     const store = useStore();
-    const token = computed(() => store.getters("common/token"));
+    const token = computed(() => store.state.common.token);
 
     const massage = ref<string>("This is home page");
+
     const changeMessage = () => {
-      massage.value =
-        massage.value === "This is index page"
-          ? "This is home page"
-          : "This is index page";
+      if (massage.value === "This is index page") {
+        massage.value = "This is home page";
+      } else {
+        massage.value = "This is index page";
+      }
     };
+
     return { token, massage, changeMessage };
   },
 });
 </script>
 
 <style scoped>
-.hello {
+.home {
+  margin: 20px;
+  text-align: center;
+}
+.token {
   margin: 20px;
 }
 </style>

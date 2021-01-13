@@ -12,7 +12,7 @@ import {
   ref,
   toRefs,
   watch,
-  watchEffect,
+  // watchEffect,
 } from "vue";
 import { useDebouncedRef } from "./../hooks/debounce";
 
@@ -40,7 +40,8 @@ export default defineComponent({
     //   massage.value = msg.value;
     // });
 
-    let debounceTimer;
+    // eslint-disable-next-line
+    let debounceTimer: any;
     const inputValue = useDebouncedRef("hello", (timer) => {
       debounceTimer = timer;
     });
@@ -60,5 +61,6 @@ export default defineComponent({
 <style scoped>
 .hello {
   margin: 20px;
+  text-align: center;
 }
 </style>
