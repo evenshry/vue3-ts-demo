@@ -3,43 +3,40 @@
     <div className="MultiCheck_Title">{{ label }}</div>
     <div className="MultiCheck_Content">
       <div className="MultiCheck_Panel">
-        <template
-          v-for="(column, columnIndex) in sequences"
-          :key="`column_${columnIndex}`"
+        <ul
+          className="MultiCheck_Column"
+          :style="{
+            height: 24 * Math.ceil((options.length + 1) / columns) + 'px',
+          }"
         >
-          <ul className="MultiCheck_Column">
-            <li v-if="columnIndex === 0" className="MultiCheck_Column_Item">
+          <li className="MultiCheck_Column_Item">
+            <label className="MultiCheck_Column_Label">
+              <input
+                type="checkbox"
+                :checked="checkAll"
+                className="MultiCheck_Column_Check"
+                @change="handleCheckAll(!checkAll)"
+              />
+              Select All
+            </label>
+          </li>
+
+          <template v-for="(item, index) in options" :key="`item_${index}`">
+            <li className="MultiCheck_Column_Item">
               <label className="MultiCheck_Column_Label">
                 <input
                   type="checkbox"
-                  :checked="checkAll"
                   className="MultiCheck_Column_Check"
-                  @change="handleCheckAll(!checkAll)"
+                  :checked="values.includes(item.value)"
+                  @change="
+                    handleCheckItem(item.value, !values.includes(item.value))
+                  "
                 />
-                Select All
+                {{ item.label }}
               </label>
             </li>
-
-            <template
-              v-for="(item, index) in options.slice(column.start, column.end)"
-              :key="`item_${index}`"
-            >
-              <li className="MultiCheck_Column_Item">
-                <label className="MultiCheck_Column_Label">
-                  <input
-                    type="checkbox"
-                    className="MultiCheck_Column_Check"
-                    :checked="values.includes(item.value)"
-                    @change="
-                      handleCheckItem(item.value, !values.includes(item.value))
-                    "
-                  />
-                  {{ item.label }}
-                </label>
-              </li>
-            </template>
-          </ul>
-        </template>
+          </template>
+        </ul>
       </div>
     </div>
   </div>
@@ -47,7 +44,6 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import Utils from "./utils";
 
 interface Props {
   label: string;
@@ -81,14 +77,6 @@ export default defineComponent({
   },
 
   setup(props: Props, context) {
-    const sequences = computed(() => {
-      if (props.options.length && props.columns) {
-        return Utils.getSequences(props.options.length, props.columns);
-      } else {
-        return [];
-      }
-    });
-
     const checkAll = computed(() => {
       // If every option is checked, then checkAll is checked, otherwise checkAll is unchecked
       return props.options.every((item: any) =>
@@ -119,7 +107,6 @@ export default defineComponent({
     };
 
     return {
-      sequences,
       checkAll,
       handleCheckAll,
       handleCheckItem,
@@ -128,7 +115,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style scoped >
 .MultiCheck {
   box-shadow: 0 0 10px 2px rgba(194, 193, 193, 0.2);
   background-color: #ffffff;
@@ -149,19 +136,20 @@ export default defineComponent({
 .MultiCheck_Panel {
   border: 1px solid #e6e6e6;
   border-radius: 5px;
-  display: flex;
-  flex-direction: row;
   padding: 5px;
 }
 
 .MultiCheck_Column {
-  flex: 1;
   margin: 0px;
   padding: 0px;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .MultiCheck_Column_Item {
+  height: 24px;
   line-height: 24px;
   padding: 0px;
 }

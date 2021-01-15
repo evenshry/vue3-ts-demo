@@ -3,9 +3,4 @@ declare namespace MultiCheck {
     label: string;
     value: string;
   }
-
-  export interface Sequence {
-    start: number;
-    end: number;
-  }
 }

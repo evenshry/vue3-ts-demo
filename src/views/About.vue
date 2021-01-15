@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import MultiCheck from "@/components/MultiCheck2/index.vue";
+import MultiCheck from "@/components/MultiCheck/index.vue";
 
 const defaultOptions: MultiCheck.Option[] = [
   { label: "aaa", value: "111" },
